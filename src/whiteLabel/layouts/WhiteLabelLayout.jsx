@@ -21,11 +21,12 @@ const WhiteLabelLayout = ({ children }) => {
   };
 
   const footerStyle = {
-    marginTop: 'auto',
+    marginTop: '3rem',     // Substitui o "auto" e sobe o rodapé
     fontSize: '0.8rem',
     opacity: 0.7,
-    paddingTop: '2rem',
+    paddingTop: '1rem',    // Pode reduzir se quiser o espaçamento mais compacto
   };
+  
 
   return (
     <div style={layoutStyle}>
