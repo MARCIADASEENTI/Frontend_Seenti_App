@@ -180,6 +180,7 @@ export default function CadastroCliente() {
     }
   };
 
+
   return (
     <div className="max-w-xl mx-auto mt-12 p-6 border rounded-lg shadow bg-white">
       <h2 className="text-2xl font-bold mb-4 text-center text-green-700">
