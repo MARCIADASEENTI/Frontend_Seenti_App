@@ -12,6 +12,7 @@ const WhiteLabelLayout = ({ children }) => {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-between',
   };
 
   const logoStyle = {
@@ -19,12 +20,26 @@ const WhiteLabelLayout = ({ children }) => {
     marginBottom: '1rem',
   };
 
+  const footerStyle = {
+    marginTop: 'auto',
+    fontSize: '0.8rem',
+    opacity: 0.7,
+    paddingTop: '2rem',
+  };
+
   return (
     <div style={layoutStyle}>
       <img src={brand.logo} alt={`${brand.name} logo`} style={logoStyle} />
+
       <main style={{ width: '100%', maxWidth: '600px' }}>
         {children}
       </main>
+
+      {brand.name === 'Seenti' && (
+        <footer style={footerStyle}>
+          <span>© {new Date().getFullYear()} Seenti® - Todos os direitos reservados.</span>
+        </footer>
+      )}
     </div>
   );
 };

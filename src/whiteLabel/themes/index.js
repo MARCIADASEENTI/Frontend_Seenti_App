@@ -1,18 +1,18 @@
-// src/themes/index.js
 export const themes = {
   default: {
-    name: 'Seenti Padrão',
+    name: 'Seenti',
     logo: '/logo.png',
     primaryColor: '#1E3A8A',
-    secondaryColor: '#F0FDF4',
+    secondaryColor: '#f2ebf7',
     fontFamily: 'Arial, sans-serif',
+    poweredBy: 'Seenti®',  // ⬅️ Adicionado
   },
-    parceiroX: {
-      name: 'Parceiro X',
-      logo: '/assets/logo-parceirox.png',
-      primaryColor: '#FF6600',
-      secondaryColor: '#f4f4f4',
-      fontFamily: 'Roboto, sans-serif',
-    },
-  };
-  
+  parceiroX: {
+    name: 'Marcia Alves',
+    logo: '/assets/logo-parceirox.png',
+    primaryColor: '#FF6600',
+    secondaryColor: '#f4f4f4',
+    fontFamily: 'Roboto, sans-serif',
+    poweredBy: 'Seenti®',  // ⬅️ Ainda assim vem da mesma base
+  },
+};

@@ -1,9 +1,8 @@
-
 // src/components/cliente/Login.jsx
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
+import api from "../../services/api"; // Importando o serviço axios
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -27,23 +26,9 @@ export default function Login() {
       const res = await api.post("/login", { email, senha });
 
       if (res.status === 200) {
-        const usuario_id = res.data.usuario_id;
-        localStorage.setItem("usuario_id", usuario_id);
+        localStorage.setItem("usuario_id", res.data.usuario_id);
         localStorage.setItem("tipo_usuario", res.data.tipo_usuario);
-
-        // Verifica se o cliente existe
-        const clienteRes = await api.get(`/clientes/usuario/${usuario_id}`);
-        const cliente = clienteRes.data;
-
-        // Verifica se o termo foi assinado
-        const termoRes = await api.get(`/termo-assinado/${usuario_id}`);
-        const termoAssinado = termoRes.data.assinado;
-
-        if (cliente && termoAssinado) {
-          navigate("/perfil");
-        } else {
-          navigate("/boas-vindas");
-        }
+        navigate("/boas-vindas");
       }
     } catch (err) {
       console.error("Erro de login:", err);

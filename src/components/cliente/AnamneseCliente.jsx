@@ -112,10 +112,10 @@ const AnamneseCliente = () => {
       <h2 className="text-2xl font-bold mb-6 text-center text-green-700">
         Formulário de Anamnese
       </h2>
-
+  
       {erro && <p className="text-red-600 mb-4 p-3 bg-red-50 rounded">{erro}</p>}
       {sucesso && <p className="text-green-600 mb-4 p-3 bg-green-50 rounded">{sucesso}</p>}
-
+  
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Objetivo e Área de Ênfase */}
         <div className="border rounded-lg p-4">
@@ -151,7 +151,7 @@ const AnamneseCliente = () => {
             </div>
           </div>
         </div>
-
+  
         {/* Dor e Sintomas */}
         <div className="border rounded-lg p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Dor e Sintomas</h3>
@@ -169,112 +169,24 @@ const AnamneseCliente = () => {
                 required
               />
             </div>
-            
+  
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="enxaqueca"
-                  checked={form.enxaqueca}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Enxaqueca</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="depressao"
-                  checked={form.depressao}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Depressão</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="insonia"
-                  checked={form.insonia}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Insônia</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="dor_mandibula"
-                  checked={form.dor_mandibula}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Dor Mandíbula</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="bruxismo"
-                  checked={form.bruxismo}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Bruxismo</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="disturbio_renal"
-                  checked={form.disturbio_renal}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Distúrbio Renal</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="antecedente_oncologico"
-                  checked={form.antecedente_oncologico}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Antecedente Oncológico</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="pedra_rim"
-                  checked={form.pedra_rim}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Pedra no Rim</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="pedra_vesicula"
-                  checked={form.pedra_vesicula}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Pedra na Vesícula</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="doenca_cronica"
-                  checked={form.doenca_cronica}
-                  onChange={handleChange}
-                  className="rounded"
-                />
-                <span className="text-sm">Doença Crônica</span>
-              </label>
+              {['enxaqueca','depressao','insonia','dor_mandibula','bruxismo','disturbio_renal','antecedente_oncologico','pedra_rim','pedra_vesicula','doenca_cronica'].map((item) => (
+                <label key={item} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    name={item}
+                    checked={form[item]}
+                    onChange={handleChange}
+                    className="rounded"
+                  />
+                  <span className="text-sm capitalize">{item.replace('_', ' ')}</span>
+                </label>
+              ))}
             </div>
           </div>
         </div>
-
+  
         {/* Saúde Geral */}
         <div className="border rounded-lg p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Saúde Geral</h3>
@@ -341,7 +253,7 @@ const AnamneseCliente = () => {
             </div>
           </div>
         </div>
-
+  
         {/* Contato */}
         <div className="border rounded-lg p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Contato</h3>
@@ -376,7 +288,7 @@ const AnamneseCliente = () => {
             </div>
           </div>
         </div>
-
+  
         {/* Observações */}
         <div className="border rounded-lg p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Observações</h3>
@@ -408,7 +320,7 @@ const AnamneseCliente = () => {
             </div>
           </div>
         </div>
-
+  
         {/* Botões */}
         <div className="flex justify-between pt-4">
           <button
@@ -428,6 +340,7 @@ const AnamneseCliente = () => {
       </form>
     </div>
   );
+  
 };
 
 export default AnamneseCliente; 
