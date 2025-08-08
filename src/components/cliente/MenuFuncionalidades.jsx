@@ -1,3 +1,4 @@
+//// Pequena atualização para disparar build
 import React from 'react';
 import { FaNotesMedical, FaCalendarAlt, FaHistory, FaRobot } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
