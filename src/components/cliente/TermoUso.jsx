@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function TermoUso() {
   const [termoTexto, setTermoTexto] = useState('');
   const [erro, setErro] = useState('');
   const [aceitando, setAceitando] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function buscarTextoTermo() {
@@ -20,10 +22,9 @@ export default function TermoUso() {
         setErro('Erro ao conectar com o servidor.');
       }
     }
-  
     buscarTextoTermo();
   }, []);
-  
+
   const aceitarTermo = async () => {
     setErro('');
     setAceitando(true);
@@ -32,6 +33,7 @@ export default function TermoUso() {
     if (!usuario_id) {
       setErro('Usuário não autenticado. Faça login novamente.');
       setAceitando(false);
+      navigate('/login');
       return;
     }
 
@@ -46,13 +48,28 @@ export default function TermoUso() {
         usuario_id,
         consentimento: true,
       });
-    
-      if (res.status === 200) {
-        window.location.href = '/cadastro-cliente';
+
+      if (res.status === 201 || res.status === 200) {
+        // Verifica se cliente já está cadastrado
+        try {
+          const clienteRes = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/clientes/usuario/${usuario_id}`
+          );
+          if (clienteRes?.data?._id) {
+            navigate('/perfil'); // Vai direto pro perfil se já existir
+          } else {
+            navigate('/cadastro-cliente'); // Senão, vai para cadastro
+          }
+        } catch (error) {
+          if (error?.response?.status === 404) {
+            navigate('/cadastro-cliente');
+          } else {
+            setErro('Erro ao verificar cadastro do cliente.');
+          }
+        }
       } else {
         setErro('Erro ao registrar aceite do termo.');
       }
-    
     } catch (err) {
       console.error(err);
       setErro('Erro ao aceitar o termo. Verifique sua conexão.');
@@ -62,11 +79,15 @@ export default function TermoUso() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-4 border rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Termo de Uso e Consentimento</h2>
+    <div className="max-w-2xl mx-auto mt-10 p-4 border rounded shadow bg-white">
+      <h2 className="text-2xl font-bold mb-4 text-green-700">Termo de Uso e Consentimento</h2>
       {erro && <p className="text-red-600">{erro}</p>}
       <div className="overflow-y-scroll max-h-96 p-3 border bg-gray-50 rounded">
-        {termoTexto ? <pre className="whitespace-pre-wrap">{termoTexto}</pre> : 'Carregando termo...'}
+        {termoTexto ? (
+          <pre className="whitespace-pre-wrap">{termoTexto}</pre>
+        ) : (
+          'Carregando termo...'
+        )}
       </div>
       <button
         onClick={aceitarTermo}

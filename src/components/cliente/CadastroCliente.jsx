@@ -34,21 +34,21 @@ export default function CadastroCliente() {
     cpf = cpf.replace(/[^\d]/g, '');
     if (cpf.length !== 11) return false;
     if (cpf === cpf[0].repeat(11)) return false;
-    
+
     let soma = 0;
     for (let i = 0; i < 9; i++) {
       soma += parseInt(cpf[i]) * (10 - i);
     }
     let resto = 11 - (soma % 11);
     let digito1 = resto < 2 ? 0 : resto;
-    
+
     soma = 0;
     for (let i = 0; i < 10; i++) {
       soma += parseInt(cpf[i]) * (11 - i);
     }
     resto = 11 - (soma % 11);
     let digito2 = resto < 2 ? 0 : resto;
-    
+
     return cpf[9] === digito1.toString() && cpf[10] === digito2.toString();
   };
 
@@ -58,7 +58,7 @@ export default function CadastroCliente() {
     const nascimento = new Date(dataNascimento);
     let idade = hoje.getFullYear() - nascimento.getFullYear();
     const mes = hoje.getMonth() - nascimento.getMonth();
-    
+
     if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
       idade--;
     }
@@ -68,7 +68,7 @@ export default function CadastroCliente() {
   // Validação dos campos obrigatórios
   const validarCampos = () => {
     const { primeiro_nome, sobrenome, cpf, data_nascimento, telefone, rua, numero, bairro, cidade, estado, cep } = form;
-    
+
     if (!primeiro_nome || !sobrenome || !cpf || !data_nascimento || !telefone) {
       setErro('⚠️ Preencha todos os campos obrigatórios.');
       return false;
@@ -169,7 +169,8 @@ export default function CadastroCliente() {
       if (err.response?.status === 400) {
         setErro(err.response.data.erro || 'Dados inválidos ou incompletos. Revise os campos.');
       } else if (err.response?.status === 409) {
-        setErro('CPF já cadastrado. Use um CPF diferente.');
+        // Cliente já cadastrado → redirecionar
+        navigate('/perfil');
       } else if (err.response?.status === 500) {
         setErro('Erro interno do servidor. Tente novamente.');
       } else {
@@ -180,9 +181,18 @@ export default function CadastroCliente() {
     }
   };
 
-
   return (
     <div className="max-w-xl mx-auto mt-12 p-6 border rounded-lg shadow bg-white">
+      
+      {/* Botão Voltar */}
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="mb-4 px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+      >
+        ← Voltar
+      </button>
+
       <h2 className="text-2xl font-bold mb-4 text-center text-green-700">
         Cadastro do Cliente
       </h2>
@@ -190,7 +200,11 @@ export default function CadastroCliente() {
       {erro && <p className="text-red-600 mb-4">{erro}</p>}
       {sucesso && <p className="text-green-600 mb-4">{sucesso}</p>}
 
+      {/* Formulário continua igual */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
+        
+        {/* Campos pessoais */}
+        {/* ... restante dos inputs iguais ao seu código atual ... */}
         <div className="grid grid-cols-2 gap-2">
           <input
             name="primeiro_nome"
@@ -367,8 +381,7 @@ export default function CadastroCliente() {
           {loading ? 'Cadastrando...' : 'Cadastrar'}
         </button>
       </form>
+      
     </div>
   );
 }
-
-
