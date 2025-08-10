@@ -3,7 +3,7 @@ export const themes = {
     name: 'Seenti',
     logo: '/logo.png',
     primaryColor: '#1E3A8A',
-    secondaryColor: '#f2ebf7',
+    secondaryColor: '#AC80DD',
     fontFamily: 'Arial, sans-serif',
     poweredBy: 'Seenti®',  // ⬅️ Adicionado
   },

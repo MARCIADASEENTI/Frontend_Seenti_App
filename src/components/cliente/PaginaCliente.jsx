@@ -82,7 +82,7 @@ export default function PaginaCliente() {
         {cliente && (
           <>
             <h2 className="text-xl font-semibold mb-4 text-center text-green-700">
-              Olá, {cliente.primeiro_nome}! Bem-vindo(a) de volta à sua jornada de bem-estar, preencha sua anamnese no botão Nova Anamnese 🌿
+              Olá, {cliente.primeiro_nome}! Bem-vindo(a) de volta à sua jornada de bem-estar!
             </h2>
 
             {mostrarDados && (
@@ -138,61 +138,37 @@ export default function PaginaCliente() {
             </section>
 
             <MenuFuncionalidades />
-
-            <div className="text-center mt-6">
-              <button
-                onClick={handleNovaAnamnese}
-                className="bg-green-600 text-white py-2 px-6 rounded hover:bg-green-700 transition"
-              >
-                Preencher Nova Anamnese
-              </button>
-            </div>
           </>
         )}
       </main>
 
-      {/* Rodapé mobile simplificado */}
-      <footer className="bg-[#001433] border-t fixed bottom-0 left-0 right-0 flex justify-around py-2 md:hidden shadow-inner">
-  <button
-    aria-label="Home"
-    className="text-white hover:text-green-300 focus:outline-none"
-    onClick={() => navigate('/')}
-  >
-    {/* ícone Home */}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4l9 5.75v9a2 2 0 01-2 2h-4a2 2 0 01-2-2v-5h-2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-9z" />
-    </svg>
-  </button>
-  <button
-    aria-label="Perfil"
-    className="text-white hover:text-green-300 focus:outline-none"
-    onClick={() => navigate('/perfil')}
-  >
-    {/* ícone Perfil */}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-      />
-    </svg>
-  </button>
-</footer>
-
+      {/* Rodapé mobile simplificado com botão Home */}
+      <footer
+        className="bg-[#001433] border-t fixed bottom-0 left-0 right-0 flex justify-center py-3 md:hidden shadow-inner"
+      >
+        <button
+          aria-label="Home"
+          className="text-green-300 !text-green-300 hover:!text-green-400 focus:!text-green-400 active:!text-green-500 focus:outline-none px-6"
+          onClick={() => navigate('/')}
+          style={{ minWidth: '44px', minHeight: '44px' }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-11 w-11"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+            style={{ color: '#22c55e' }} // verde Tailwind 300
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 9.75L12 4l9 5.75v9a2 2 0 01-2 2h-4a2 2 0 01-2-2v-5h-2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-9z"
+            />
+          </svg>
+        </button>
+      </footer>
     </div>
   );
 }

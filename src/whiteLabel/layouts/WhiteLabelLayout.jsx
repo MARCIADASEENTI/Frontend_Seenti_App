@@ -32,7 +32,7 @@ const footerStyle = {
     <div style={layoutStyle}>
       <img src={brand.logo} alt={`${brand.name} logo`} style={logoStyle} />
 
-      <main style={{ width: '100%', maxWidth: '600px' }}>
+      <main style={{ width: '100%', maxWidth: '500px' }}>
         {children}
       </main>
 

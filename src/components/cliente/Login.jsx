@@ -1,6 +1,4 @@
-
 // src/components/cliente/Login.jsx
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
@@ -31,18 +29,44 @@ export default function Login() {
         localStorage.setItem("usuario_id", usuario_id);
         localStorage.setItem("tipo_usuario", res.data.tipo_usuario);
 
-        // Verifica se o cliente existe
-        const clienteRes = await api.get(`/clientes/usuario/${usuario_id}`);
-        const cliente = clienteRes.data;
+        // 🔹 Verifica se o cliente existe
+        let cliente = null;
+        try {
+          const clienteRes = await api.get(`/clientes/usuario/${usuario_id}`);
+          cliente = clienteRes.data;
+        } catch {
+          cliente = null;
+        }
 
-        // Verifica se o termo foi assinado
-        const termoRes = await api.get(`/termo-assinado/${usuario_id}`);
-        const termoAssinado = termoRes.data.assinado;
+        // 🔹 Verifica se o termo foi assinado
+        let termoAssinado = false;
+        try {
+          const termoRes = await api.get(`/termo-assinado/${usuario_id}`);
+          termoAssinado = termoRes.data.assinado;
+        } catch {
+          termoAssinado = false;
+        }
 
-        if (cliente && termoAssinado) {
-          navigate("/perfil");
+        // 🔹 Verifica se já existe anamnese preenchida
+        let possuiAnamnese = false;
+        if (cliente) {
+          try {
+            const anamnesesRes = await api.get(`/anamneses/cliente/${cliente._id}`);
+            possuiAnamnese = anamnesesRes.data.length > 0;
+          } catch {
+            possuiAnamnese = false;
+          }
+        }
+
+        // 🔹 Regras de redirecionamento
+        if (!termoAssinado) {
+          navigate("/termo");
+        } else if (!cliente) {
+          navigate("/cadastro-cliente");
+        } else if (!possuiAnamnese) {
+          navigate("/anamnese");
         } else {
-          navigate("/boas-vindas");
+          navigate("/perfil");
         }
       }
     } catch (err) {

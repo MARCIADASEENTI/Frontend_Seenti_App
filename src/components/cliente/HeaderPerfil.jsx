@@ -2,7 +2,7 @@
 import React from 'react';
 import { FaUserCircle, FaCog, FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const SEENTI_PRIMARY_COLOR = '#001433'; // cor da barra
+const SEENTI_PRIMARY_COLOR = '#54AEFE'; // cor da barra
 
 export default function HeaderPerfil({ cliente, mostrarDados, onToggleDados }) {
   const buttonStyle = {
