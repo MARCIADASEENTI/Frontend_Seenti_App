@@ -1,4 +1,4 @@
-/* WhiteLabelLayout.css */
+/* WhiteLabelLayout.css - ISOLADO para não interferir com outros layouts */
 .white-label-layout {
   font-family: inherit;
   min-height: 100vh;
@@ -21,15 +21,15 @@
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-  animation: float 20s ease-in-out infinite;
+  animation: white-label-float 20s ease-in-out infinite;
 }
 
-@keyframes float {
+@keyframes white-label-float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(180deg); }
 }
 
-.white-label-logo {
+.white-label-layout .white-label-logo {
   width: 120px;
   height: auto;
   margin-bottom: 2rem;
@@ -42,11 +42,11 @@
   position: relative;
 }
 
-.white-label-logo:hover {
+.white-label-layout .white-label-logo:hover {
   transform: scale(1.05);
 }
 
-.white-label-main {
+.white-label-layout .white-label-main {
   width: 100%;
   max-width: 500px;
   background: rgba(255, 255, 255, 0.95);
@@ -59,7 +59,7 @@
   position: relative;
 }
 
-.white-label-footer {
+.white-label-layout .white-label-footer {
   margin-top: 3rem;
   font-size: 0.8rem;
   opacity: 0.8;
@@ -70,18 +70,18 @@
   position: relative;
 }
 
-/* Responsividade - CORRIGIDO para funcionar em todos os dispositivos */
+/* Responsividade - CORRIGIDO e ISOLADO */
 @media (max-width: 768px) {
   .white-label-layout {
     padding: 1rem;
   }
   
-  .white-label-main {
+  .white-label-layout .white-label-main {
     padding: 2rem;
     margin: 0 1rem;
   }
   
-  .white-label-logo {
+  .white-label-layout .white-label-logo {
     width: 80px !important;
     height: auto !important;
     max-width: 80px !important;
@@ -96,12 +96,12 @@
     padding: 0.5rem;
   }
   
-  .white-label-main {
+  .white-label-layout .white-label-main {
     padding: 1.5rem;
     margin: 0 0.5rem;
   }
   
-  .white-label-logo {
+  .white-label-layout .white-label-logo {
     width: 60px !important;
     height: auto !important;
     max-width: 60px !important;
@@ -112,7 +112,7 @@
 
 /* Responsividade para dispositivos ultra-pequenos */
 @media (max-width: 360px) {
-  .white-label-logo {
+  .white-label-layout .white-label-logo {
     width: 50px !important;
     height: auto !important;
     max-width: 50px !important;
