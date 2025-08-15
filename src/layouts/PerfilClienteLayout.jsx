@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { brand } from '../whiteLabel/config/brandConfig';
+import './PerfilClienteLayout.css';
 
 export default function PerfilClienteLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -66,57 +67,61 @@ export default function PerfilClienteLayout({ children }) {
 
   const handleNavigation = (path) => {
     navigate(path);
+    // Fechar sidebar mobile se estiver aberta
     if (sidebarOpen) {
       setSidebarOpen(false);
     }
   };
 
-  // Cores padrão caso o WhiteLabel falhe
-  const primaryColor = brand?.primaryColor || '#1E3A8A';
-  const secondaryColor = brand?.secondaryColor || '#AC80DD';
+  // Aplicar cores do WhiteLabel
+  const sidebarStyle = {
+    backgroundColor: brand?.primaryColor || '#1E3A8A',
+    borderRightColor: brand?.secondaryColor || '#AC80DD'
+  };
+
+  const logoStyle = {
+    background: `linear-gradient(135deg, ${brand?.primaryColor || '#1E3A8A'}, ${brand?.secondaryColor || '#AC80DD'})`
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar - sempre visível no desktop */}
-      <aside 
-        className="hidden md:block w-64 min-h-screen shadow-lg"
-        style={{ backgroundColor: primaryColor }}
-      >
+    <div className="perfil-cliente-layout">
+      {/* Sidebar para desktop */}
+      <aside className="perfil-sidebar" style={sidebarStyle}>
         {/* Header da sidebar */}
-        <div className="p-6 border-b border-white/20">
+        <div className="perfil-sidebar-header">
           <div className="flex items-center space-x-3">
             <img 
               src={brand?.logo || '/assets/logo-parceirox.png'} 
-              alt={`Logo ${brand?.name || 'Seenti'}`}
-              className="w-12 h-12 rounded-lg object-contain bg-white p-1"
+              alt={`Logo ${brand?.name || 'Marcia Alves'}`}
+              className="w-10 h-10 rounded-lg object-contain bg-white p-1"
+              onLoad={() => console.log('✅ Logo carregado com sucesso:', brand?.logo)}
+              onError={(e) => {
+                console.error('❌ Erro ao carregar logo:', brand?.logo, e);
+                console.log('🔄 Usando fallback logo');
+              }}
             />
             <div>
-              <h2 className="text-lg font-semibold text-white">{brand?.name || 'Seenti'}</h2>
-              <p className="text-sm text-white/80">Área do Cliente</p>
+              <h2 className="text-lg font-semibold text-white">{brand?.name || 'Marcia Alves'}</h2>
+              <p className="text-sm text-white opacity-80">Área do Cliente</p>
             </div>
           </div>
         </div>
 
         {/* Menu de navegação */}
-        <nav className="p-4">
+        <nav className="perfil-sidebar-nav">
           <ul className="space-y-2">
             {menuItems.map((item) => (
               <li key={item.path}>
                 <button
                   onClick={() => handleNavigation(item.path)}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-left ${
-                    isActivePath(item.path) 
-                      ? 'bg-white/20 text-white border-l-4' 
-                      : 'text-white/80 hover:bg-white/10 hover:text-white'
+                  className={`perfil-menu-item ${
+                    isActivePath(item.path) ? 'active' : ''
                   }`}
-                  style={{ 
-                    borderLeftColor: isActivePath(item.path) ? secondaryColor : 'transparent' 
-                  }}
                 >
-                  <span className="text-xl">{item.icon}</span>
-                  <div>
-                    <div className="font-medium">{item.label}</div>
-                    <div className="text-xs opacity-75">{item.description}</div>
+                  <span className="perfil-menu-icon">{item.icon}</span>
+                  <div className="perfil-menu-text">
+                    <div className="perfil-menu-label">{item.label}</div>
+                    <div className="perfil-menu-description">{item.description}</div>
                   </div>
                 </button>
               </li>
@@ -125,114 +130,105 @@ export default function PerfilClienteLayout({ children }) {
         </nav>
 
         {/* Footer da sidebar */}
-        <div className="p-4 border-t border-white/20">
+        <div className="perfil-sidebar-footer">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center space-x-3 px-4 py-3 text-red-200 hover:bg-red-500/20 hover:text-red-100 rounded-lg transition-all duration-200"
+            className="perfil-logout-button"
           >
-            <span className="text-xl">🚪</span>
+            <span className="perfil-menu-icon">🚪</span>
             <span>Sair</span>
           </button>
         </div>
       </aside>
 
+      {/* Sidebar mobile */}
+      <div className={`perfil-mobile-sidebar ${sidebarOpen ? 'block' : 'hidden'}`}>
+        {/* Overlay */}
+        <div 
+          className="perfil-mobile-overlay"
+          onClick={toggleSidebar}
+        />
+        
+        {/* Sidebar mobile */}
+        <div className={`perfil-mobile-sidebar-content ${sidebarOpen ? 'show' : ''}`} style={sidebarStyle}>
+          {/* Header mobile */}
+          <div className="perfil-sidebar-header">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="perfil-sidebar-logo" style={logoStyle}>
+                  {brand?.name ? brand.name.charAt(0) : 'S'}
+                </div>
+                <span className="font-semibold text-white">{brand?.name || 'Seenti'}</span>
+              </div>
+              <button
+                onClick={toggleSidebar}
+                className="p-2 text-white hover:text-white opacity-80"
+              >
+                <span className="text-xl">❌</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Menu mobile */}
+          <nav className="perfil-sidebar-nav">
+            <ul className="space-y-2">
+              {menuItems.map((item) => (
+                <li key={item.path}>
+                  <button
+                    onClick={() => handleNavigation(item.path)}
+                    className={`perfil-menu-item ${
+                      isActivePath(item.path) ? 'active' : ''
+                    }`}
+                  >
+                    <span className="perfil-menu-icon">{item.icon}</span>
+                    <div className="perfil-menu-text">
+                      <div className="perfil-menu-label">{item.label}</div>
+                      <div className="perfil-menu-description">{item.description}</div>
+                    </div>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Footer mobile */}
+          <div className="perfil-sidebar-footer">
+            <button
+              onClick={handleLogout}
+              className="perfil-logout-button"
+            >
+              <span className="perfil-menu-icon">🚪</span>
+              <span>Sair</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Conteúdo principal */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Header mobile */}
-        <header className="md:hidden bg-white shadow-sm border-b border-gray-200 p-4">
+      <div className="perfil-main-content">
+        {/* Header mobile com botão de menu */}
+        <header className="perfil-mobile-header">
           <div className="flex items-center justify-between">
             <button
               onClick={toggleSidebar}
-              className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg"
+              className="perfil-mobile-menu-button"
             >
               <span className="text-xl">☰</span>
             </button>
-            
             <div className="flex items-center space-x-3">
               <img 
                 src={brand?.logo || '/assets/logo-parceirox.png'} 
-                alt={`Logo ${brand?.name || 'Seenti'}`}
-                className="w-8 h-8 rounded-lg object-contain bg-white p-1"
+                alt={`Logo ${brand?.name || 'Marcia Alves'}`}
+                className="w-6 h-6 rounded-lg object-contain bg-white p-1"
               />
-              <span className="font-semibold text-gray-800">{brand?.name || 'Seenti'}</span>
+              <span className="font-semibold text-white">{brand?.name || 'Marcia Alves'}</span>
             </div>
-            
-            <div className="w-10"></div>
+            <div className="w-10"></div> {/* Espaçador para centralizar */}
           </div>
         </header>
 
-        {/* Sidebar mobile - overlay */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 z-50 md:hidden">
-            <div 
-              className="absolute inset-0 bg-black/50"
-              onClick={toggleSidebar}
-            />
-            
-            <div 
-              className="absolute left-0 top-0 h-full w-64 shadow-xl"
-              style={{ backgroundColor: primaryColor }}
-            >
-              <div className="p-6 border-b border-white/20">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <img 
-                      src={brand?.logo || '/assets/logo-parceirox.png'} 
-                      alt={`Logo ${brand?.name || 'Seenti'}`}
-                      className="w-10 h-10 rounded-lg object-contain bg-white p-1"
-                    />
-                    <span className="font-semibold text-white">{brand?.name || 'Seenti'}</span>
-                  </div>
-                  <button
-                    onClick={toggleSidebar}
-                    className="p-2 text-white hover:text-white/80"
-                  >
-                    <span className="text-xl">❌</span>
-                  </button>
-                </div>
-              </div>
-
-              <nav className="p-4">
-                <ul className="space-y-2">
-                  {menuItems.map((item) => (
-                    <li key={item.path}>
-                      <button
-                        onClick={() => handleNavigation(item.path)}
-                        className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-left ${
-                          isActivePath(item.path) 
-                            ? 'bg-white/20 text-white border-l-4' 
-                            : 'text-white/80 hover:bg-white/10 hover:text-white'
-                        }`}
-                        style={{ 
-                          borderLeftColor: isActivePath(item.path) ? secondaryColor : 'transparent' 
-                        }}
-                      >
-                        <span className="text-xl">{item.icon}</span>
-                        <div>
-                          <div className="font-medium">{item.label}</div>
-                          <div className="text-xs opacity-75">{item.description}</div>
-                        </div>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-
-              <div className="p-4 border-t border-white/20">
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center space-x-3 px-4 py-3 text-red-200 hover:bg-red-500/20 hover:text-red-100 rounded-lg transition-all duration-200"
-                >
-                  <span className="text-xl">🚪</span>
-                  <span>Sair</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Conteúdo da página */}
-        <main className="flex-1 p-4 md:p-6">
+        <main className="perfil-content">
           <div className="max-w-4xl mx-auto">
             {children}
           </div>

@@ -1,17 +1,17 @@
 export const themes = {
   default: {
     name: 'Seenti',
-    logo: '/assets/logo-parceirox.png',
-    primaryColor: '#1E3A8A', // Azul escuro
-    secondaryColor: '#AC80DD', // Roxo claro
+    logo: '/logo.png',
+    primaryColor: '#1E3A8A',
+    secondaryColor: '#AC80DD',
     fontFamily: 'Arial, sans-serif',
     poweredBy: 'Seenti®',
   },
   parceiroX: {
     name: 'Marcia Alves',
     logo: '/assets/logo-parceirox.png',
-    primaryColor: '#AC80DD', // Roxo claro (cor principal da marca)
-    secondaryColor: '#E91E63', // Rosa escuro (cor secundária da marca)
+    primaryColor: '#FF6600',
+    secondaryColor: '#f4f4f4',
     fontFamily: 'Roboto, sans-serif',
     poweredBy: 'Seenti®',
   },
