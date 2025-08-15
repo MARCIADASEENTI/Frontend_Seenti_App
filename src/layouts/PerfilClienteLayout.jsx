@@ -77,11 +77,9 @@ export default function PerfilClienteLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar - sempre visível no desktop, overlay no mobile */}
+      {/* Sidebar - sempre visível no desktop */}
       <aside 
-        className={`fixed md:static inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        }`}
+        className="hidden md:block w-64 min-h-screen shadow-lg"
         style={{ backgroundColor: primaryColor }}
       >
         {/* Header da sidebar */}
@@ -100,7 +98,7 @@ export default function PerfilClienteLayout({ children }) {
         </div>
 
         {/* Menu de navegação */}
-        <nav className="p-4 flex-1">
+        <nav className="p-4">
           <ul className="space-y-2">
             {menuItems.map((item) => (
               <li key={item.path}>
@@ -138,14 +136,6 @@ export default function PerfilClienteLayout({ children }) {
         </div>
       </aside>
 
-      {/* Overlay para mobile */}
-      {sidebarOpen && (
-        <div 
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={toggleSidebar}
-        />
-      )}
-
       {/* Conteúdo principal */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header mobile */}
@@ -170,6 +160,76 @@ export default function PerfilClienteLayout({ children }) {
             <div className="w-10"></div>
           </div>
         </header>
+
+        {/* Sidebar mobile - overlay */}
+        {sidebarOpen && (
+          <div className="fixed inset-0 z-50 md:hidden">
+            <div 
+              className="absolute inset-0 bg-black/50"
+              onClick={toggleSidebar}
+            />
+            
+            <div 
+              className="absolute left-0 top-0 h-full w-64 shadow-xl"
+              style={{ backgroundColor: primaryColor }}
+            >
+              <div className="p-6 border-b border-white/20">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <img 
+                      src={brand?.logo || '/assets/logo-parceirox.png'} 
+                      alt={`Logo ${brand?.name || 'Seenti'}`}
+                      className="w-10 h-10 rounded-lg object-contain bg-white p-1"
+                    />
+                    <span className="font-semibold text-white">{brand?.name || 'Seenti'}</span>
+                  </div>
+                  <button
+                    onClick={toggleSidebar}
+                    className="p-2 text-white hover:text-white/80"
+                  >
+                    <span className="text-xl">❌</span>
+                  </button>
+                </div>
+              </div>
+
+              <nav className="p-4">
+                <ul className="space-y-2">
+                  {menuItems.map((item) => (
+                    <li key={item.path}>
+                      <button
+                        onClick={() => handleNavigation(item.path)}
+                        className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-left ${
+                          isActivePath(item.path) 
+                            ? 'bg-white/20 text-white border-l-4' 
+                            : 'text-white/80 hover:bg-white/10 hover:text-white'
+                        }`}
+                        style={{ 
+                          borderLeftColor: isActivePath(item.path) ? secondaryColor : 'transparent' 
+                        }}
+                      >
+                        <span className="text-xl">{item.icon}</span>
+                        <div>
+                          <div className="font-medium">{item.label}</div>
+                          <div className="text-xs opacity-75">{item.description}</div>
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              <div className="p-4 border-t border-white/20">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center space-x-3 px-4 py-3 text-red-200 hover:bg-red-500/20 hover:text-red-100 rounded-lg transition-all duration-200"
+                >
+                  <span className="text-xl">🚪</span>
+                  <span>Sair</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Conteúdo da página */}
         <main className="flex-1 p-4 md:p-6">
