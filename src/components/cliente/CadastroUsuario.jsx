@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/api";
 
 export default function CadastroUsuario() {
   const [email, setEmail] = useState("");
@@ -28,7 +28,7 @@ export default function CadastroUsuario() {
     }
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/usuarios`, {
+      const res = await api.post('/usuarios', {
         email,
         senha,
         tipo_usuario: "C",

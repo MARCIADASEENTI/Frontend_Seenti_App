@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { brand } from '../../whiteLabel/config/brandConfig';
+import api from '../../services/api';
 
 const AnamneseCliente = () => {
   const navigate = useNavigate();
@@ -39,9 +40,9 @@ const AnamneseCliente = () => {
       try {
         const cliente_id = localStorage.getItem('cliente_id');
         if (cliente_id) {
-          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/clientes/${cliente_id}`);
-          if (response.ok) {
-            const cliente = await response.json();
+          const response = await api.get(`/clientes/${cliente_id}`);
+          if (response.status === 200) {
+            const cliente = response.data;
             setForm(prev => ({
               ...prev,
               email: cliente.contato?.email || '',
@@ -114,22 +115,16 @@ const AnamneseCliente = () => {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/anamneses`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cliente_id,
-          dados: form
-        })
+      const response = await api.post('/anamneses', {
+        cliente_id,
+        dados: form
       });
     
       if (response.status === 201) {
         setSucesso('✅ Anamnese enviada com sucesso!');
         setTimeout(() => navigate('/perfil'), 1500);
       } else {
-        const errorData = await response.json();
+        const errorData = response.data;
         if (response.status === 409) {
           setErro('Você já possui uma anamnese registrada.');
         } else if (errorData?.erro) {

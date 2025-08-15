@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 
 export default function TermoUso() {
   const [termoTexto, setTermoTexto] = useState('');
@@ -11,7 +11,7 @@ export default function TermoUso() {
   useEffect(() => {
     async function buscarTextoTermo() {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/termos_texto`);
+        const res = await api.get('/termos_texto');
         if (res.status === 200 && res.data.termo) {
           setTermoTexto(res.data.termo);
         } else {
@@ -44,15 +44,15 @@ export default function TermoUso() {
     }
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/termos_uso`, {
+      const res = await api.post('/termos_uso', {
         usuario_id,
         consentimento: true,
       });
 
       if (res.status === 201 || res.status === 200) {
         try {
-          const clienteRes = await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/clientes/usuario/${usuario_id}`
+          const clienteRes = await api.get(
+            `/clientes/usuario/${usuario_id}`
           );
           if (clienteRes?.data?._id) {
             // 🔹 Salva o cliente_id no localStorage antes de redirecionar

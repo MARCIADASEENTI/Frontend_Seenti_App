@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 
 export default function CadastroCliente() {
   const [form, setForm] = useState({
@@ -115,7 +115,7 @@ export default function CadastroCliente() {
 
     try {
       // Verifica se cliente já existe para o usuário atual
-      const clienteExistente = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/clientes/usuario/${usuario_id}`);
+      const clienteExistente = await api.get(`/clientes/usuario/${usuario_id}`);
       if (clienteExistente?.data?._id) {
         setLoading(false);
         navigate('/perfil');
@@ -158,7 +158,7 @@ export default function CadastroCliente() {
       console.log('🔍 Enviando dados do cliente:', dadosCliente);
       console.log('🔍 CPF sendo enviado:', dadosCliente.cpf);
 
-      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/clientes`, dadosCliente);
+      const res = await api.post('/clientes', dadosCliente);
 
       if (res.status === 201 && res.data.cliente_id) {
         localStorage.setItem('cliente_id', res.data.cliente_id);

@@ -1,6 +1,7 @@
 // src/components/cliente/PaginaCliente.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 
 export default function PaginaCliente() {
   const [cliente, setCliente] = useState(null);
@@ -22,9 +23,9 @@ export default function PaginaCliente() {
       }
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/clientes/${cliente_id}`);
-        if (res.ok) {
-          const data = await res.json();
+        const res = await api.get(`/clientes/${cliente_id}`);
+        if (res.status === 200) {
+          const data = res.data;
           setCliente(data);
         } else {
           setErro('⚠️ Não foi possível carregar os dados do cliente.');
