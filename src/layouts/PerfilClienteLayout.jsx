@@ -227,6 +227,13 @@ export default function PerfilClienteLayout({ children }) {
                 src={brand?.logo || '/assets/logo-parceirox.png'} 
                 alt={`Logo ${brand?.name || 'Marcia Alves'}`}
                 className="w-6 h-6 rounded-lg object-contain bg-white p-1"
+                style={{
+                  width: '1.5rem',
+                  height: '1.5rem',
+                  maxWidth: '1.5rem',
+                  maxHeight: '1.5rem',
+                  objectFit: 'contain'
+                }}
               />
               <span className="font-semibold text-white">{brand?.name || 'Marcia Alves'}</span>
             </div>
