@@ -64,91 +64,91 @@ export default function PaginaCliente() {
   return (
     <div className="min-h-full">
       {/* Controles de dados pessoais */}
-      <div className="mb-6 flex justify-center">
+      <div className="mb-4 md:mb-6 flex justify-center">
         <button
           onClick={() => setMostrarDados(!mostrarDados)}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+          className="px-3 py-2 md:px-4 md:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs md:text-sm font-medium"
         >
           {mostrarDados ? '👁️‍🗨️ Ocultar Dados' : '👁️ Mostrar Dados Pessoais'}
         </button>
       </div>
 
       {loading && (
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Carregando dados...</p>
+        <div className="text-center py-6 md:py-8">
+          <div className="animate-spin rounded-full h-6 w-6 md:h-8 md:w-8 border-b-2 border-green-600 mx-auto mb-3 md:mb-4"></div>
+          <p className="text-gray-600 text-sm md:text-base">Carregando dados...</p>
         </div>
       )}
       
       {erro && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-center">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 md:px-4 md:py-3 rounded-lg mb-4 md:mb-6 text-center text-sm">
           {erro}
         </div>
       )}
 
       {cliente && (
         <>
-          <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center text-green-700">
+          <h2 className="text-lg md:text-xl lg:text-2xl font-semibold mb-4 md:mb-6 text-center text-green-700 px-2">
             Olá, {cliente.primeiro_nome}! Bem-vindo(a) de volta à sua jornada de bem-estar!
           </h2>
 
           {mostrarDados && (
             <section
               aria-labelledby="dados-pessoais-title"
-              className="bg-green-50 border border-green-200 p-4 md:p-6 rounded-lg mb-6"
+              className="bg-green-50 border border-green-200 p-3 md:p-4 lg:p-6 rounded-lg mb-4 md:mb-6"
             >
-              <h3 id="dados-pessoais-title" className="font-bold mb-4 text-green-700 text-lg">
+              <h3 id="dados-pessoais-title" className="font-bold mb-3 md:mb-4 text-green-700 text-base md:text-lg">
                 📋 Dados Pessoais
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-800">
-                <div className="p-2 bg-white rounded border">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 text-gray-800 text-sm md:text-base">
+                <div className="p-2 md:p-3 bg-white rounded border">
                   <strong>Nome:</strong> {cliente.primeiro_nome} {cliente.sobrenome}
                 </div>
                 {cliente.nome_social && (
-                  <div className="p-2 bg-white rounded border">
+                  <div className="p-2 md:p-3 bg-white rounded border">
                     <strong>Nome Social:</strong> {cliente.nome_social}
                   </div>
                 )}
-                <div className="p-2 bg-white rounded border">
+                <div className="p-2 md:p-3 bg-white rounded border">
                   <strong>CPF:</strong> {formatarCPF(cliente.cpf)}
                 </div>
-                <div className="p-2 bg-white rounded border">
+                <div className="p-2 md:p-3 bg-white rounded border">
                   <strong>Data de Nascimento:</strong> {formatarData(cliente.data_nascimento)}
                 </div>
                 {cliente.genero && (
-                  <div className="p-2 bg-white rounded border">
+                  <div className="p-2 md:p-3 bg-white rounded border">
                     <strong>Gênero:</strong> {cliente.genero}
                   </div>
                 )}
-                <div className="p-2 bg-white rounded border">
+                <div className="p-2 md:p-3 bg-white rounded border">
                   <strong>Telefone:</strong> {formatarTelefone(cliente.contato?.telefone)}
                 </div>
                 {cliente.contato?.email_alternativo && (
-                  <div className="p-2 bg-white rounded border">
+                  <div className="p-2 md:p-3 bg-white rounded border">
                     <strong>Email Alternativo:</strong> {cliente.contato.email_alternativo}
                   </div>
                 )}
               </div>
 
               {/* Endereço */}
-              <div className="mt-4 pt-4 border-t border-green-200">
-                <h4 className="font-semibold mb-3 text-green-700 text-base">📍 Endereço</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="p-2 bg-white rounded border">
+              <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-green-200">
+                <h4 className="font-semibold mb-2 md:mb-3 text-green-700 text-sm md:text-base">📍 Endereço</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  <div className="p-2 md:p-3 bg-white rounded border">
                     <strong>Rua:</strong> {cliente.endereco?.rua}, {cliente.endereco?.numero}
                   </div>
                   {cliente.endereco?.complemento && (
-                    <div className="p-2 bg-white rounded border">
+                    <div className="p-2 md:p-3 bg-white rounded border">
                       <strong>Complemento:</strong> {cliente.endereco.complemento}
                     </div>
                   )}
-                  <div className="p-2 bg-white rounded border">
+                  <div className="p-2 md:p-3 bg-white rounded border">
                     <strong>Bairro:</strong> {cliente.endereco?.bairro}
                   </div>
-                  <div className="p-2 bg-white rounded border">
+                  <div className="p-2 md:p-3 bg-white rounded border">
                     <strong>Cidade:</strong> {cliente.endereco?.cidade} - {cliente.endereco?.estado}
                   </div>
-                  <div className="p-2 bg-white rounded border">
+                  <div className="p-2 md:p-3 bg-white rounded border">
                     <strong>CEP:</strong> {cliente.endereco?.cep}
                   </div>
                 </div>
@@ -157,22 +157,22 @@ export default function PaginaCliente() {
           )}
 
           {/* Seção de Feedback para o Usuário */}
-          <section className="bg-blue-50 border border-blue-200 p-4 md:p-6 rounded-lg mb-6">
-            <h3 className="font-bold mb-4 text-blue-700 text-lg">
+          <section className="bg-blue-50 border border-blue-200 p-3 md:p-4 lg:p-6 rounded-lg mb-4 md:mb-6">
+            <h3 className="font-bold mb-3 md:mb-4 text-blue-700 text-base md:text-lg">
               💬 Sua Opinião é Importante
             </h3>
-            <p className="text-gray-700 mb-4 text-sm md:text-base">
+            <p className="text-gray-700 mb-3 md:mb-4 text-xs md:text-sm lg:text-base">
               Ajude-nos a melhorar sua experiência na plataforma. Como está sendo sua jornada até agora?
             </p>
             
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                <span className="text-sm text-gray-600 font-medium">Experiência geral:</span>
+                <span className="text-xs md:text-sm text-gray-600 font-medium">Experiência geral:</span>
                 <div className="flex space-x-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
-                      className="text-yellow-400 hover:text-yellow-500 text-lg md:text-xl transition-colors"
+                      className="text-yellow-400 hover:text-yellow-500 text-base md:text-lg lg:text-xl transition-colors"
                       title={`${star} estrela${star > 1 ? 's' : ''}`}
                     >
                       ⭐
@@ -182,18 +182,18 @@ export default function PaginaCliente() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
                   Comentários ou sugestões:
                 </label>
                 <textarea
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+                  className="w-full p-2 md:p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-xs md:text-sm"
                   rows="3"
                   placeholder="Conte-nos como podemos melhorar..."
                 />
               </div>
               
               <div className="flex justify-end">
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium">
+                <button className="px-3 py-2 md:px-4 md:py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-xs md:text-sm font-medium">
                   Enviar Feedback
                 </button>
               </div>
@@ -202,53 +202,53 @@ export default function PaginaCliente() {
 
           <section
             aria-labelledby="funcionalidades-title"
-            className="bg-white border border-gray-200 p-4 md:p-6 rounded-lg shadow-sm"
+            className="bg-white border border-gray-200 p-3 md:p-4 lg:p-6 rounded-lg shadow-sm"
           >
-            <h3 id="funcionalidades-title" className="font-bold mb-4 text-gray-800 text-lg">
+            <h3 id="funcionalidades-title" className="font-bold mb-3 md:mb-4 text-gray-800 text-base md:text-lg">
               🚀 Funcionalidades Disponíveis
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
               <button
                 onClick={handleNovaAnamnese}
-                className="p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-all duration-200 text-left group"
+                className="p-3 md:p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-all duration-200 text-left group"
               >
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
-                    <span className="text-green-600 text-lg">📋</span>
+                <div className="flex items-center space-x-2 md:space-x-3">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                    <span className="text-green-600 text-base md:text-lg">📋</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 group-hover:text-green-700">Nova Anamnese</h4>
-                    <p className="text-sm text-gray-600">Atualizar dados de saúde</p>
+                    <h4 className="font-semibold text-gray-800 group-hover:text-green-700 text-sm md:text-base">Nova Anamnese</h4>
+                    <p className="text-xs md:text-sm text-gray-600">Atualizar dados de saúde</p>
                   </div>
                 </div>
               </button>
 
               <button
                 onClick={() => navigate('/agendamentos')}
-                className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-left group"
+                className="p-3 md:p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-left group"
               >
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                    <span className="text-blue-600 text-lg">📅</span>
+                <div className="flex items-center space-x-2 md:space-x-3">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <span className="text-blue-600 text-base md:text-lg">📅</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 group-hover:text-blue-700">Agendamentos</h4>
-                    <p className="text-sm text-gray-600">Gerenciar consultas</p>
+                    <h4 className="font-semibold text-gray-800 group-hover:text-blue-700 text-sm md:text-base">Agendamentos</h4>
+                    <p className="text-xs md:text-sm text-gray-600">Gerenciar consultas</p>
                   </div>
                 </div>
               </button>
 
               <button
                 onClick={() => alert('Histórico - Em desenvolvimento para próxima sprint')}
-                className="p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 text-left group"
+                className="p-3 md:p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 text-left group"
               >
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                    <span className="text-purple-600 text-lg">📊</span>
+                <div className="flex items-center space-x-2 md:space-x-3">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                    <span className="text-purple-600 text-base md:text-lg">📊</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 group-hover:text-purple-700">Histórico</h4>
-                    <p className="text-sm text-gray-600">Sessões realizadas</p>
+                    <h4 className="font-semibold text-gray-800 group-hover:text-purple-700 text-sm md:text-base">Histórico</h4>
+                    <p className="text-xs md:text-sm text-gray-600">Sessões realizadas</p>
                   </div>
                 </div>
               </button>
