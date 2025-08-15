@@ -155,6 +155,9 @@ export default function CadastroCliente() {
         tenant_id: '686af5e0bb776faa73fa8e03',
       };
 
+      console.log('🔍 Enviando dados do cliente:', dadosCliente);
+      console.log('🔍 CPF sendo enviado:', dadosCliente.cpf);
+
       const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/clientes`, dadosCliente);
 
       if (res.status === 201 && res.data.cliente_id) {
@@ -165,12 +168,16 @@ export default function CadastroCliente() {
         setErro('Erro ao cadastrar cliente. Tente novamente.');
       }
     } catch (err) {
-      console.error(err);
+      console.error('❌ Erro detalhado:', err);
+      console.error('❌ Status da resposta:', err.response?.status);
+      console.error('❌ Dados da resposta:', err.response?.data);
+      
       if (err.response?.status === 400) {
         setErro(err.response.data.erro || 'Dados inválidos ou incompletos. Revise os campos.');
       } else if (err.response?.status === 409) {
         // Cliente já cadastrado → redirecionar
-        navigate('/perfil');
+        setErro('CPF já cadastrado na base de dados. Use outro CPF ou faça login.');
+        setTimeout(() => navigate('/login'), 2000);
       } else if (err.response?.status === 500) {
         setErro('Erro interno do servidor. Tente novamente.');
       } else {
