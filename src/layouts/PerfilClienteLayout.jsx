@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { brand } from '../whiteLabel/config/brandConfig';
-import './PerfilClienteLayout.css';
 
 export default function PerfilClienteLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -74,26 +73,23 @@ export default function PerfilClienteLayout({ children }) {
   };
 
   // Aplicar cores do WhiteLabel
-  const sidebarStyle = {
-    backgroundColor: brand?.primaryColor || '#1E3A8A',
-    borderRightColor: brand?.secondaryColor || '#AC80DD'
-  };
-
-  const logoStyle = {
-    background: `linear-gradient(135deg, ${brand?.primaryColor || '#1E3A8A'}, ${brand?.secondaryColor || '#AC80DD'})`
-  };
+  const primaryColor = brand?.primaryColor || '#1E3A8A';
+  const secondaryColor = brand?.secondaryColor || '#AC80DD';
 
   return (
-    <div className="perfil-cliente-layout">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar para desktop */}
-      <aside className="perfil-sidebar" style={sidebarStyle}>
+      <aside 
+        className="hidden md:flex w-64 flex-col bg-white shadow-lg"
+        style={{ backgroundColor: primaryColor }}
+      >
         {/* Header da sidebar */}
-        <div className="perfil-sidebar-header">
+        <div className="p-6 border-b border-white/20">
           <div className="flex items-center space-x-3">
             <img 
               src={brand?.logo || '/assets/logo-parceirox.png'} 
-              alt={`Logo ${brand?.name || 'Marcia Alves'}`}
-              className="w-10 h-10 rounded-lg object-contain bg-white p-1"
+              alt={`Logo ${brand?.name || 'Seenti'}`}
+              className="w-12 h-12 rounded-lg object-contain bg-white p-1"
               onLoad={() => console.log('✅ Logo carregado com sucesso:', brand?.logo)}
               onError={(e) => {
                 console.error('❌ Erro ao carregar logo:', brand?.logo, e);
@@ -101,27 +97,32 @@ export default function PerfilClienteLayout({ children }) {
               }}
             />
             <div>
-              <h2 className="text-lg font-semibold text-white">{brand?.name || 'Marcia Alves'}</h2>
-              <p className="text-sm text-white opacity-80">Área do Cliente</p>
+              <h2 className="text-lg font-semibold text-white">{brand?.name || 'Seenti'}</h2>
+              <p className="text-sm text-white/80">Área do Cliente</p>
             </div>
           </div>
         </div>
 
         {/* Menu de navegação */}
-        <nav className="perfil-sidebar-nav">
+        <nav className="flex-1 p-4">
           <ul className="space-y-2">
             {menuItems.map((item) => (
               <li key={item.path}>
                 <button
                   onClick={() => handleNavigation(item.path)}
-                  className={`perfil-menu-item ${
-                    isActivePath(item.path) ? 'active' : ''
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-left ${
+                    isActivePath(item.path) 
+                      ? 'bg-white/20 text-white border-l-4' 
+                      : 'text-white/80 hover:bg-white/10 hover:text-white'
                   }`}
+                  style={{ 
+                    borderLeftColor: isActivePath(item.path) ? secondaryColor : 'transparent' 
+                  }}
                 >
-                  <span className="perfil-menu-icon">{item.icon}</span>
-                  <div className="perfil-menu-text">
-                    <div className="perfil-menu-label">{item.label}</div>
-                    <div className="perfil-menu-description">{item.description}</div>
+                  <span className="text-xl">{item.icon}</span>
+                  <div>
+                    <div className="font-medium">{item.label}</div>
+                    <div className="text-xs opacity-75">{item.description}</div>
                   </div>
                 </button>
               </li>
@@ -130,39 +131,46 @@ export default function PerfilClienteLayout({ children }) {
         </nav>
 
         {/* Footer da sidebar */}
-        <div className="perfil-sidebar-footer">
+        <div className="p-4 border-t border-white/20">
           <button
             onClick={handleLogout}
-            className="perfil-logout-button"
+            className="w-full flex items-center space-x-3 px-4 py-3 text-red-200 hover:bg-red-500/20 hover:text-red-100 rounded-lg transition-all duration-200"
           >
-            <span className="perfil-menu-icon">🚪</span>
+            <span className="text-xl">🚪</span>
             <span>Sair</span>
           </button>
         </div>
       </aside>
 
       {/* Sidebar mobile */}
-      <div className={`perfil-mobile-sidebar ${sidebarOpen ? 'block' : 'hidden'}`}>
+      <div className={`fixed inset-0 z-50 md:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         {/* Overlay */}
         <div 
-          className="perfil-mobile-overlay"
+          className="absolute inset-0 bg-black/50"
           onClick={toggleSidebar}
         />
         
         {/* Sidebar mobile */}
-        <div className={`perfil-mobile-sidebar-content ${sidebarOpen ? 'show' : ''}`} style={sidebarStyle}>
+        <div 
+          className={`absolute left-0 top-0 h-full w-64 bg-white shadow-xl transform transition-transform duration-300 ${
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+          style={{ backgroundColor: primaryColor }}
+        >
           {/* Header mobile */}
-          <div className="perfil-sidebar-header">
+          <div className="p-6 border-b border-white/20">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="perfil-sidebar-logo" style={logoStyle}>
-                  {brand?.name ? brand.name.charAt(0) : 'S'}
-                </div>
+                <img 
+                  src={brand?.logo || '/assets/logo-parceirox.png'} 
+                  alt={`Logo ${brand?.name || 'Seenti'}`}
+                  className="w-10 h-10 rounded-lg object-contain bg-white p-1"
+                />
                 <span className="font-semibold text-white">{brand?.name || 'Seenti'}</span>
               </div>
               <button
                 onClick={toggleSidebar}
-                className="p-2 text-white hover:text-white opacity-80"
+                className="p-2 text-white hover:text-white/80"
               >
                 <span className="text-xl">❌</span>
               </button>
@@ -170,20 +178,25 @@ export default function PerfilClienteLayout({ children }) {
           </div>
 
           {/* Menu mobile */}
-          <nav className="perfil-sidebar-nav">
+          <nav className="flex-1 p-4">
             <ul className="space-y-2">
               {menuItems.map((item) => (
                 <li key={item.path}>
                   <button
                     onClick={() => handleNavigation(item.path)}
-                    className={`perfil-menu-item ${
-                      isActivePath(item.path) ? 'active' : ''
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-left ${
+                      isActivePath(item.path) 
+                        ? 'bg-white/20 text-white border-l-4' 
+                        : 'text-white/80 hover:bg-white/10 hover:text-white'
                     }`}
+                    style={{ 
+                      borderLeftColor: isActivePath(item.path) ? secondaryColor : 'transparent' 
+                    }}
                   >
-                    <span className="perfil-menu-icon">{item.icon}</span>
-                    <div className="perfil-menu-text">
-                      <div className="perfil-menu-label">{item.label}</div>
-                      <div className="perfil-menu-description">{item.description}</div>
+                    <span className="text-xl">{item.icon}</span>
+                    <div>
+                      <div className="font-medium">{item.label}</div>
+                      <div className="text-xs opacity-75">{item.description}</div>
                     </div>
                   </button>
                 </li>
@@ -192,12 +205,12 @@ export default function PerfilClienteLayout({ children }) {
           </nav>
 
           {/* Footer mobile */}
-          <div className="perfil-sidebar-footer">
+          <div className="p-4 border-t border-white/20">
             <button
               onClick={handleLogout}
-              className="perfil-logout-button"
+              className="w-full flex items-center space-x-3 px-4 py-3 text-red-200 hover:bg-red-500/20 hover:text-red-100 rounded-lg transition-all duration-200"
             >
-              <span className="perfil-menu-icon">🚪</span>
+              <span className="text-xl">🚪</span>
               <span>Sair</span>
             </button>
           </div>
@@ -205,30 +218,30 @@ export default function PerfilClienteLayout({ children }) {
       </div>
 
       {/* Conteúdo principal */}
-      <div className="perfil-main-content">
+      <div className="flex-1 flex flex-col">
         {/* Header mobile com botão de menu */}
-        <header className="perfil-mobile-header">
+        <header className="md:hidden bg-white shadow-sm border-b border-gray-200 p-4">
           <div className="flex items-center justify-between">
             <button
               onClick={toggleSidebar}
-              className="perfil-mobile-menu-button"
+              className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <span className="text-xl">☰</span>
             </button>
             <div className="flex items-center space-x-3">
               <img 
                 src={brand?.logo || '/assets/logo-parceirox.png'} 
-                alt={`Logo ${brand?.name || 'Marcia Alves'}`}
-                className="w-6 h-6 rounded-lg object-contain bg-white p-1"
+                alt={`Logo ${brand?.name || 'Seenti'}`}
+                className="w-8 h-8 rounded-lg object-contain bg-white p-1"
               />
-              <span className="font-semibold text-white">{brand?.name || 'Marcia Alves'}</span>
+              <span className="font-semibold text-gray-800">{brand?.name || 'Seenti'}</span>
             </div>
             <div className="w-10"></div> {/* Espaçador para centralizar */}
           </div>
         </header>
 
         {/* Conteúdo da página */}
-        <main className="perfil-content">
+        <main className="flex-1 p-4 md:p-6">
           <div className="max-w-4xl mx-auto">
             {children}
           </div>
