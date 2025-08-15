@@ -1,7 +1,7 @@
 export const themes = {
   default: {
     name: 'Seenti',
-    logo: '/logo.png',
+    logo: '/assets/logo-parceirox.png',
     primaryColor: '#1E3A8A', // Azul escuro
     secondaryColor: '#AC80DD', // Roxo claro
     fontFamily: 'Arial, sans-serif',
