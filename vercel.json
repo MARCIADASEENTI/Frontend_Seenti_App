@@ -1,24 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } },
-    { "src": "api/**/*.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    // Rotas da API
-    { "src": "/api/(.*)", "dest": "/api/$1.js" },
-
-    // Assets do Vite (JS, CSS, imagens etc.)
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-
-    // Arquivos estáticos importantes
-    { "src": "/favicon.ico", "dest": "/favicon.ico" },
-    { "src": "/manifest.json", "dest": "/manifest.json" },
-
-    // Catch-all: todas as outras rotas vão para SPA
-    { "src": "/((?!assets|favicon.ico|manifest.json|api).*)", "dest": "/index.html" }
-  ],
-  "env": {
-    "VITE_API_BASE_URL": "https://seenti-backend.onrender.com"
-  }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
