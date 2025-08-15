@@ -94,6 +94,13 @@ export default function PerfilClienteLayout({ children }) {
               src={brand?.logo || '/assets/logo-parceirox.png'} 
               alt={`Logo ${brand?.name || 'Marcia Alves'}`}
               className="w-10 h-10 rounded-lg object-contain bg-white p-1"
+              style={{
+                width: '2.5rem',
+                height: '2.5rem',
+                maxWidth: '2.5rem',
+                maxHeight: '2.5rem',
+                objectFit: 'contain'
+              }}
               onLoad={() => console.log('✅ Logo carregado com sucesso:', brand?.logo)}
               onError={(e) => {
                 console.error('❌ Erro ao carregar logo:', brand?.logo, e);
