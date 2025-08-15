@@ -1,5 +1,5 @@
 // src/whiteLabel/layouts/WhiteLabelLayout.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { brand } from '../config/brandConfig.js';
 import './WhiteLabelLayout.css';
 
@@ -10,6 +10,16 @@ const WhiteLabelLayout = ({ children }) => {
     '--primary-color': brand.primaryColor,
     '--secondary-color': brand.secondaryColor,
   };
+
+  // Debug: verificar se as variáveis estão sendo aplicadas
+  useEffect(() => {
+    console.log('🔍 WhiteLabelLayout renderizado');
+    console.log('🏷️ Marca:', brand.name);
+    console.log('🎨 Cor primária:', brand.primaryColor);
+    console.log('🎨 Cor secundária:', brand.secondaryColor);
+    console.log('🖼️ Logo path:', brand.logo);
+    console.log('🎨 Variáveis CSS aplicadas:', layoutStyle);
+  }, []);
 
   const handleLogoError = (e) => {
     console.error('❌ Erro ao carregar logo no WhiteLabelLayout:', brand.logo);
