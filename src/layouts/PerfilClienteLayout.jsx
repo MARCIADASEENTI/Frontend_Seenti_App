@@ -95,10 +95,10 @@ export default function PerfilClienteLayout({ children }) {
               alt={`Logo ${brand?.name || 'Marcia Alves'}`}
               className="w-10 h-10 rounded-lg object-contain bg-white p-1"
               style={{
-                width: '2.5rem',
-                height: '2.5rem',
-                maxWidth: '2.5rem',
-                maxHeight: '2.5rem',
+                width: '3rem',
+                height: '3rem',
+                maxWidth: '3rem',
+                maxHeight: '3rem',
                 objectFit: 'contain'
               }}
               onLoad={() => console.log('✅ Logo carregado com sucesso:', brand?.logo)}
