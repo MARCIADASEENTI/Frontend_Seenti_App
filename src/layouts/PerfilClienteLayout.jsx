@@ -1,7 +1,7 @@
 // src/layouts/PerfilClienteLayout.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { brand } from '../whiteLabel/config/brandConfig';
+import { brand } from '@white/config/brandConfig';
 import './PerfilClienteLayout.css';
 
 export default function PerfilClienteLayout({ children }) {

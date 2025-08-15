@@ -1,8 +1,8 @@
 // src/components/cliente/Login.jsx
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
-import { brand } from "../../whiteLabel/config/brandConfig";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
+import { brand } from '@white/config/brandConfig';
 
 export default function Login() {
   const [email, setEmail] = useState("");

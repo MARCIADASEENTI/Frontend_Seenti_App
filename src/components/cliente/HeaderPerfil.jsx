@@ -1,6 +1,6 @@
 // src/components/cliente/HeaderPerfil.jsx
 import React from 'react';
-import { brand } from '../../whiteLabel/config/brandConfig';
+import { brand } from '@white/config/brandConfig';
 
 export default function HeaderPerfil({ cliente, mostrarDados, onToggleDados }) {
   return (

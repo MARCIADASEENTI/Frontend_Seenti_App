@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { brand } from '../../whiteLabel/config/brandConfig';
+import { brand } from '@white/config/brandConfig';
 import api from '../../services/api';
 
 const AnamneseCliente = () => {

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCalendarAlt, FaClock, FaUser, FaMapMarkerAlt, FaCheck, FaTimes } from 'react-icons/fa';
-import { brand } from '../../whiteLabel/config/brandConfig';
+import { brand } from '@white/config/brandConfig';
 import api from '../../services/api';
 
 export default function AgendamentoCliente() {
