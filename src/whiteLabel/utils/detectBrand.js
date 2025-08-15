@@ -1,16 +1,36 @@
 // src/whiteLabel/utils/detectBrand.js
-export function detectBrand() {
+
+// Função para detectar a marca baseada no hostname
+export const detectBrand = () => {
   const host = window.location.hostname;
-  const path = window.location.pathname;
+  const port = window.location.port;
   
-  // Para desenvolvimento local, usar tema default (Seenti) para ter as cores corretas
   if (host === '127.0.0.1' || host === 'localhost') {
-    console.log('🔍 Desenvolvimento local detectado - usando tema Seenti (default)');
-    return 'default';
+    // Se estiver usando port forwarding (porta 8080), usar tema padrão
+    if (port === '8080') {
+      return 'default';
+    }
+    // Se estiver rodando direto na porta 5173, usar tema padrão
+    if (port === '5173') {
+      return 'default';
+    }
   }
   
-  // Para produção, detectar por subdomain
-  const subdomain = host.split('.')[0];
-  const knownBrands = ['seenti', 'parceiroX'];
-  return knownBrands.includes(subdomain) ? subdomain : 'seenti';
-}
+  // Para produção, usar tema padrão
+  return 'default';
+};
+
+// Função para detectar o caminho correto do logo baseado no ambiente
+export const getLogoPath = (logoPath) => {
+  const host = window.location.hostname;
+  const port = window.location.port;
+  
+  // Se estiver usando port forwarding (porta 8080), usar caminho relativo
+  if (port === '8080') {
+    // Remover a barra inicial para usar caminho relativo
+    return logoPath.startsWith('/') ? logoPath.substring(1) : logoPath;
+  }
+  
+  // Para desenvolvimento direto (porta 5173) ou produção, usar caminho absoluto
+  return logoPath;
+};
