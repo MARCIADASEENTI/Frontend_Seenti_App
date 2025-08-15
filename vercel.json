@@ -54,5 +54,8 @@
   "trailingSlash": false,
   "github": {
     "silent": true
+  },
+  "deployment": {
+    "autoAlias": true
   }
 }
