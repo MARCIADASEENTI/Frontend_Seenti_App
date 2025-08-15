@@ -231,14 +231,14 @@ const AnamneseCliente = () => {
                 name="dor_atual"
                 value={form.dor_atual}
                 onChange={handleChange}
-                placeholder="Descreva sua dor atual, localização e características"
-                className="w-full border border-gray-300 rounded px-3 py-2 h-20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                placeholder="Descreva sua dor atual"
+                className="w-full border border-gray-300 rounded px-3 py-2 h-20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
                 required
                 disabled={loading}
               />
             </div>
-  
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               {[
                 { key: 'enxaqueca', label: 'Enxaqueca' },
                 { key: 'depressao', label: 'Depressão' },
@@ -251,7 +251,7 @@ const AnamneseCliente = () => {
                 { key: 'pedra_vesicula', label: 'Pedra na Vesícula' },
                 { key: 'doenca_cronica', label: 'Doença Crônica' }
               ].map(({ key, label }) => (
-                <label key={key} className="flex items-center space-x-2 cursor-pointer">
+                <label key={key} className="flex items-center space-x-2 cursor-pointer text-sm">
                   <input
                     type="checkbox"
                     name={key}
@@ -266,13 +266,13 @@ const AnamneseCliente = () => {
             </div>
           </div>
         </div>
-  
+
         {/* Saúde Geral */}
         <div className="border rounded-lg p-4 bg-gray-50">
           <h3 className="text-lg font-semibold mb-4" style={{ color: primaryColor }}>
             💊 Saúde Geral
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Funcionamento Intestinal *
@@ -281,7 +281,7 @@ const AnamneseCliente = () => {
                 name="funcionamento_intestinal"
                 value={form.funcionamento_intestinal}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 required
                 disabled={loading}
               >
@@ -299,7 +299,7 @@ const AnamneseCliente = () => {
                 name="stress_diario"
                 value={form.stress_diario}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 required
                 disabled={loading}
               >
@@ -319,7 +319,7 @@ const AnamneseCliente = () => {
                 value={form.anticoncepcional}
                 onChange={handleChange}
                 placeholder="Se aplicável"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 disabled={loading}
               />
             </div>
@@ -332,20 +332,20 @@ const AnamneseCliente = () => {
                 name="alimentacao"
                 value={form.alimentacao}
                 onChange={handleChange}
-                placeholder="Ex: Equilibrada, com frutas e vegetais"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Ex: Equilibrada"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 disabled={loading}
               />
             </div>
           </div>
         </div>
-  
+
         {/* Contato */}
         <div className="border rounded-lg p-4 bg-gray-50">
           <h3 className="text-lg font-semibold mb-4" style={{ color: primaryColor }}>
             📞 Contato
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email *
@@ -356,7 +356,7 @@ const AnamneseCliente = () => {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="seu@email.com"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 required
                 disabled={loading}
               />
@@ -371,14 +371,14 @@ const AnamneseCliente = () => {
                 value={form.whatsapp}
                 onChange={handleChange}
                 placeholder="(31) 99999-9999"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 required
                 disabled={loading}
               />
             </div>
           </div>
         </div>
-  
+
         {/* Observações */}
         <div className="border rounded-lg p-4 bg-gray-50">
           <h3 className="text-lg font-semibold mb-4" style={{ color: primaryColor }}>
@@ -393,8 +393,8 @@ const AnamneseCliente = () => {
                 name="observacoes_saude"
                 value={form.observacoes_saude}
                 onChange={handleChange}
-                placeholder="Informações complementares sobre sua saúde"
-                className="w-full border border-gray-300 rounded px-3 py-2 h-20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                placeholder="Informações complementares"
+                className="w-full border border-gray-300 rounded px-3 py-2 h-20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
                 disabled={loading}
               />
             </div>
@@ -408,26 +408,26 @@ const AnamneseCliente = () => {
                 value={form.nao_gosta_massagem_em}
                 onChange={handleChange}
                 placeholder="Ex: barriga, pés, rosto"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                 disabled={loading}
               />
             </div>
           </div>
         </div>
-  
+
         {/* Botões */}
-        <div className="flex justify-between pt-4">
+        <div className="flex flex-col sm:flex-row justify-between pt-4 gap-3">
           <button
             type="button"
             onClick={() => navigate('/perfil')}
-            className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition disabled:opacity-50"
+            className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition disabled:opacity-50 text-sm"
             disabled={loading}
           >
             ← Voltar
           </button>
           <button
             type="submit"
-            className="px-6 py-2 rounded text-white transition disabled:opacity-50"
+            className="px-6 py-2 rounded text-white transition disabled:opacity-50 text-sm"
             style={{ backgroundColor: primaryColor }}
             onMouseEnter={(e) => e.target.style.backgroundColor = secondaryColor}
             onMouseLeave={(e) => e.target.style.backgroundColor = primaryColor}
