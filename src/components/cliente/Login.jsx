@@ -1,8 +1,9 @@
 // src/components/cliente/Login.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../../services/api';
-import { brand } from '@white/config/brandConfig';
+
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import api from "../../services/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -11,75 +12,47 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     setErro("");
     setLoading(true);
 
     if (!email || !senha) {
-      setErro("Por favor, preencha email e senha.");
+      setErro("Preencha o email e a senha para continuar.");
       setLoading(false);
       return;
     }
 
     try {
-      const res = await api.post("/login", { email, senha });
-
+      const res = await api.post('/login', { email, senha });
+      
       if (res.status === 200) {
-        const usuario_id = res.data.usuario_id;
-        localStorage.setItem("usuario_id", usuario_id);
-        localStorage.setItem("tipo_usuario", res.data.tipo_usuario);
-
-        // 🔹 Verifica se o cliente existe
-        let cliente = null;
+        localStorage.setItem("usuario_id", res.data.usuario_id);
+        localStorage.setItem("cadastro_email", email);
+        localStorage.setItem("cadastro_senha", senha);
+        localStorage.setItem("cadastro_tipo", res.data.tipo_usuario);
+        
+        // Verifica se o usuário já tem cliente cadastrado
         try {
-          const clienteRes = await api.get(`/clientes/usuario/${usuario_id}`);
-          cliente = clienteRes.data;
-          // 🔹 Salva o cliente_id no localStorage se o cliente existir
-          if (cliente && cliente._id) {
-            localStorage.setItem("cliente_id", cliente._id);
+          const clienteRes = await api.get(`/clientes/usuario/${res.data.usuario_id}`);
+          if (clienteRes.data._id) {
+            navigate('/perfil');
+          } else {
+            navigate('/cadastro-cliente');
           }
-        } catch {
-          cliente = null;
-        }
-
-        // 🔹 Verifica se o termo foi assinado
-        let termoAssinado = false;
-        try {
-          const termoRes = await api.get(`/termo-assinado/${usuario_id}`);
-          termoAssinado = termoRes.data.assinado;
-        } catch {
-          termoAssinado = false;
-        }
-
-        // 🔹 Verifica se já existe anamnese preenchida
-        let possuiAnamnese = false;
-        if (cliente) {
-          try {
-            const anamnesesRes = await api.get(`/anamneses/cliente/${cliente._id}`);
-            possuiAnamnese = anamnesesRes.data.length > 0;
-          } catch {
-            possuiAnamnese = false;
+        } catch (err) {
+          if (err.response?.status === 404) {
+            navigate('/cadastro-cliente');
+          } else {
+            navigate('/perfil');
           }
-        }
-
-        // 🔹 Regras de redirecionamento
-        if (!termoAssinado) {
-          navigate("/termo");
-        } else if (!cliente) {
-          navigate("/cadastro-cliente");
-        } else if (!possuiAnamnese) {
-          navigate("/anamnese");
-        } else {
-          navigate("/perfil");
         }
       }
     } catch (err) {
-      console.error("Erro de login:", err);
-      if (err?.response?.status === 404) {
-        setErro("Usuário não encontrado. Cadastre-se.");
-      } else if (err?.response?.status === 401) {
-        setErro("Senha incorreta. Tente novamente.");
+      console.error(err);
+      if (err.response?.status === 401) {
+        setErro("Email ou senha incorretos.");
+      } else if (err.response?.status === 400) {
+        setErro(err.response.data.erro || "Dados inválidos. Revise os campos.");
       } else {
         setErro("Erro de conexão com o servidor. Verifique sua internet.");
       }
@@ -88,120 +61,120 @@ export default function Login() {
     }
   };
 
-  const irParaCadastro = () => {
-    navigate("/cadastro-usuario");
+  // Função para lidar com o login do Google
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setErro("");
+    setLoading(true);
+
+    try {
+      // Envia o token do Google para o backend
+      const res = await api.post('/login/google', {
+        credential: credentialResponse.credential
+      });
+      
+      if (res.status === 200) {
+        localStorage.setItem("usuario_id", res.data.usuario_id);
+        localStorage.setItem("cadastro_email", res.data.email);
+        localStorage.setItem("cadastro_tipo", res.data.tipo_usuario);
+        
+        // Verifica se o usuário já tem cliente cadastrado
+        try {
+          const clienteRes = await api.get(`/clientes/usuario/${res.data.usuario_id}`);
+          if (clienteRes.data._id) {
+            navigate('/perfil');
+          } else {
+            navigate('/cadastro-cliente');
+          }
+        } catch (err) {
+          if (err.response?.status === 404) {
+            navigate('/cadastro-cliente');
+          } else {
+            navigate('/perfil');
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.response?.status === 400) {
+        setErro(err.response.data.erro || "Erro na autenticação com Google.");
+      } else {
+        setErro("Erro de conexão com o servidor. Verifique sua internet.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Aplicar cores do WhiteLabel
-  const primaryColor = brand?.primaryColor || '#AC80DD';
-  const secondaryColor = brand?.secondaryColor || '#E91E63';
+  const handleGoogleError = () => {
+    setErro("Erro no login com Google. Tente novamente.");
+  };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          Bem-vindo(a) de volta!
-        </h1>
-        <p className="text-gray-600 text-lg">
-          Acesse sua conta para continuar sua jornada de bem-estar
-        </p>
-      </div>
+    <div className="max-w-md mx-auto mt-12 p-6 border rounded-lg shadow-md bg-white">
+      <h2 className="text-2xl font-bold mb-6 text-center text-green-700">
+        Login
+      </h2>
 
-      {erro && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <div className="flex items-center">
-            <span className="text-red-600 text-lg mr-2">⚠️</span>
-            <p className="text-red-700 text-sm">{erro}</p>
-          </div>
-        </div>
-      )}
+      {erro && <p className="text-red-600 mb-4">{erro}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-            E-mail
-          </label>
-          <div className="relative">
-            <input
-              id="email"
-              type="email"
-              placeholder="seu@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-              required
-              disabled={loading}
-            />
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <span className="text-gray-400">📧</span>
-            </div>
-          </div>
-        </div>
+      <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="E-mail"
+          className="border rounded px-3 py-2"
+          required
+        />
 
-        <div>
-          <label htmlFor="senha" className="block text-sm font-medium text-gray-700 mb-2">
-            Senha
-          </label>
-          <div className="relative">
-            <input
-              id="senha"
-              type="password"
-              placeholder="••••••••"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-              required
-              disabled={loading}
-            />
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <span className="text-gray-400">🔒</span>
-            </div>
-          </div>
-        </div>
+        <input
+          type="password"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          placeholder="Senha"
+          className="border rounded px-3 py-2"
+          required
+        />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 rounded-lg text-white font-medium transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ 
-            backgroundColor: primaryColor,
-            boxShadow: '0 4px 14px 0 rgba(0, 0, 0, 0.1)'
-          }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = secondaryColor}
-          onMouseLeave={(e) => e.target.style.backgroundColor = primaryColor}
+          className="bg-green-600 text-white py-2 rounded hover:bg-green-700 transition disabled:opacity-50"
         >
-          {loading ? (
-            <span className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-              Entrando...
-            </span>
-          ) : (
-            '🚀 Entrar'
-          )}
+          {loading ? "Entrando..." : "Entrar"}
         </button>
       </form>
 
-      <div className="mt-8 text-center">
-        <p className="text-gray-600 mb-4">
-          Não tem uma conta ainda?
-        </p>
-        <button
-          onClick={irParaCadastro}
-          className="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 transform hover:scale-105"
-        >
-          <span className="mr-2">✨</span>
-          Criar conta gratuita
-        </button>
+      {/* Separador */}
+      <div className="my-6 flex items-center">
+        <div className="flex-1 border-t border-gray-300"></div>
+        <span className="px-4 text-gray-500 text-sm">ou</span>
+        <div className="flex-1 border-t border-gray-300"></div>
       </div>
 
-      <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-        <p className="text-xs text-gray-500">
-          Ao continuar, você concorda com nossos{' '}
-          <span className="text-blue-600 cursor-pointer hover:underline">Termos de Uso</span>
-          {' '}e{' '}
-          <span className="text-blue-600 cursor-pointer hover:underline">Política de Privacidade</span>
-        </p>
+      {/* Botão Google Login */}
+      <div className="flex justify-center">
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleError}
+          useOneTap
+          theme="outline"
+          size="large"
+          text="continue_with"
+          shape="rectangular"
+          locale="pt-BR"
+        />
       </div>
+
+      <p className="text-center mt-4">
+        Não possui conta?{" "}
+        <button
+          onClick={() => navigate("/cadastro-usuario")}
+          className="text-green-700 underline hover:text-green-900"
+        >
+          Criar conta
+        </button>
+      </p>
     </div>
   );
 }

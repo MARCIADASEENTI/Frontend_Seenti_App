@@ -11,9 +11,9 @@ const getApiBaseUrl = () => {
     if (port === '8080') {
       return 'http://10.0.0.167:5000';
     }
-    // Se estiver rodando direto na porta 5173, usar backend local
+    // Se estiver rodando direto na porta 5173, usar backend Render (produção)
     if (port === '5173') {
-      return 'http://localhost:5000';
+      return 'https://backend-seenti-app.onrender.com';
     }
   }
   
