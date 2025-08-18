@@ -8,6 +8,7 @@ import WhiteLabelLayout from "@white/layouts/WhiteLabelLayout";
 import PerfilClienteLayout from "../../layouts/PerfilClienteLayout";
 
 // Componentes de fluxo do cliente
+import SplashScreen from "../SplashScreen";
 import Login from "./Login";
 import CadastroUsuario from "./CadastroUsuario";
 import TermoUso from "./TermoUso";
@@ -21,7 +22,10 @@ export default function RouterCliente() {
   return (
     <Routes>
       {/* Rota padrão */}
-      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/" element={<Navigate to="/splash" />} />
+      
+      {/* Splash Screen */}
+      <Route path="/splash" element={<SplashScreen />} />
 
       {/* Fluxo de autenticação - Usa WhiteLabelLayout */}
       <Route path="/login" element={

@@ -18,3 +18,8 @@ export const themes = {
     poweredBy: 'Seenti®',
   },
 };
+
+// Debug: verificar se os temas estão sendo carregados
+console.log('🔍 Temas carregados:', themes);
+console.log('🔍 Tema padrão:', themes.default);
+console.log('🔍 Tema parceiroX:', themes.parceiroX);

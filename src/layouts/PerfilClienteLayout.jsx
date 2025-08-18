@@ -17,7 +17,22 @@ export default function PerfilClienteLayout({ children }) {
     console.log('🖼️ Logo path:', brand?.logo);
     console.log('🎨 Cor primária:', brand?.primaryColor);
     console.log('🎨 Cor secundária:', brand?.secondaryColor);
-  }, [location.pathname]);
+    
+    // Verificar se o usuário está autenticado
+    const usuario_id = localStorage.getItem('usuario_id');
+    const cliente_id = localStorage.getItem('cliente_id');
+    
+    console.log('🔍 PerfilClienteLayout: Dados de autenticação:', {
+      usuario_id,
+      cliente_id
+    });
+    
+    if (!usuario_id || !cliente_id) {
+      console.log('❌ PerfilClienteLayout: Usuário não autenticado, redirecionando para login');
+      navigate('/login');
+      return;
+    }
+  }, [location.pathname, navigate]);
 
   const menuItems = [
     {
@@ -53,7 +68,19 @@ export default function PerfilClienteLayout({ children }) {
   ];
 
   const handleLogout = () => {
+    console.log('🚪 Iniciando logout...');
+    console.log('💾 localStorage antes da limpeza:', {
+      usuario_id: localStorage.getItem('usuario_id'),
+      cliente_id: localStorage.getItem('cliente_id'),
+      cadastro_email: localStorage.getItem('cadastro_email'),
+      cadastro_tipo: localStorage.getItem('cadastro_tipo')
+    });
+    
     localStorage.clear();
+    
+    console.log('🧹 localStorage limpo');
+    console.log('🔄 Redirecionando para login...');
+    
     navigate('/login');
   };
 
@@ -157,7 +184,7 @@ export default function PerfilClienteLayout({ children }) {
         />
         
         {/* Sidebar mobile */}
-        <div className={`perfil-mobile-sidebar-content ${sidebarOpen ? 'show' : ''}`} style={sidebarStyle}>
+        <div className={`perfil-mobile-sidebar ${sidebarOpen ? 'open' : ''}`} style={sidebarStyle}>
           {/* Header mobile */}
           <div className="perfil-sidebar-header">
             <div className="flex items-center justify-between">

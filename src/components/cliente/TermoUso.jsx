@@ -80,16 +80,16 @@ export default function TermoUso() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-6 p-4 md:p-6 border rounded shadow bg-white">
-      <h2 className="text-xl md:text-2xl font-bold mb-4 text-green-700">
+    <div className="max-w-3xl mx-auto mt-4 md:mt-6 p-3 md:p-6 border rounded shadow bg-white">
+      <h2 className="text-lg md:text-2xl font-bold mb-3 md:mb-4 text-green-700 text-center md:text-left">
         Termo de Uso e Consentimento
       </h2>
-      {erro && <p className="text-red-600 mb-4">{erro}</p>}
+      {erro && <p className="text-red-600 mb-4 text-center md:text-left">{erro}</p>}
 
-      {/* Conteúdo do termo com responsividade melhorada */}
+      {/* Conteúdo do termo com responsividade melhorada para mobile */}
       <div className="overflow-y-auto max-h-[50vh] md:max-h-[70vh] p-3 md:p-4 border bg-gray-50 rounded text-sm md:text-base leading-relaxed">
         {termoTexto ? (
-          <div className="whitespace-pre-wrap font-sans text-gray-800">
+          <div className="whitespace-pre-wrap font-sans text-gray-800 break-words overflow-wrap-anywhere">
             {termoTexto}
           </div>
         ) : (
@@ -100,12 +100,12 @@ export default function TermoUso() {
         )}
       </div>
 
-      {/* Botão responsivo e melhorado */}
+      {/* Botão responsivo e melhorado para mobile */}
       <div className="mt-6 flex justify-center">
         <button
           onClick={aceitarTermo}
           disabled={aceitando || !termoTexto}
-          className="w-full md:w-auto px-6 py-3 md:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 text-base md:text-sm font-medium shadow-sm hover:shadow-md"
+          className="w-full md:w-auto px-4 md:px-6 py-3 md:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 text-base md:text-sm font-medium shadow-sm hover:shadow-md"
         >
           {aceitando ? (
             <span className="flex items-center justify-center">

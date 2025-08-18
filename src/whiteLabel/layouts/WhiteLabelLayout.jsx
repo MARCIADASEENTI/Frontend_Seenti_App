@@ -6,13 +6,18 @@ import './WhiteLabelLayout.css';
 const WhiteLabelLayout = ({ children }) => {
   const [logoError, setLogoError] = useState(false);
   
+  // Debug: verificar se o brand está sendo carregado corretamente
+  console.log('🔍 WhiteLabelLayout: brand config:', brand);
+  console.log('🔍 WhiteLabelLayout: primaryColor:', brand?.primaryColor);
+  console.log('🔍 WhiteLabelLayout: secondaryColor:', brand?.secondaryColor);
+  
   const layoutStyle = {
     '--primary-color': brand.primaryColor,
     '--secondary-color': brand.secondaryColor,
   };
 
   const handleLogoError = (e) => {
-    console.error('❌ Erro ao carregar logo no WhiteLabelLayout:', brand.logo);
+    console.error('❌ Erro ao carregar logo no WhiteLabelLayout:', brand.logo, e);
     setLogoError(true);
   };
 
@@ -24,8 +29,8 @@ const WhiteLabelLayout = ({ children }) => {
         src={logoError ? logoFallback : brand.logo} 
         alt={`${brand.name} logo`} 
         className="white-label-logo"
-        onError={handleLogoError}
         onLoad={() => console.log('✅ Logo carregado com sucesso:', brand.logo)}
+        onError={handleLogoError}
       />
 
       <main className="white-label-main">

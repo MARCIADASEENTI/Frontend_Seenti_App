@@ -15,23 +15,36 @@ export default function PaginaCliente() {
       setErro('');
       setLoading(true);
 
+      console.log('🔍 PaginaCliente: Iniciando busca de dados do cliente...');
+      
       const cliente_id = localStorage.getItem('cliente_id');
+      const usuario_id = localStorage.getItem('usuario_id');
+      
+      console.log('🔍 PaginaCliente: Dados do localStorage:', {
+        cliente_id,
+        usuario_id
+      });
+      
       if (!cliente_id) {
+        console.log('❌ PaginaCliente: cliente_id não encontrado no localStorage');
         setErro('⚠️ Cliente não autenticado. Faça login novamente.');
         navigate('/login');
         return;
       }
 
       try {
+        console.log('🔍 PaginaCliente: Buscando dados do cliente:', cliente_id);
         const res = await api.get(`/clientes/${cliente_id}`);
         if (res.status === 200) {
           const data = res.data;
+          console.log('✅ PaginaCliente: Dados do cliente carregados:', data);
           setCliente(data);
         } else {
+          console.log('❌ PaginaCliente: Resposta não foi 200:', res.status);
           setErro('⚠️ Não foi possível carregar os dados do cliente.');
         }
       } catch (err) {
-        console.error(err);
+        console.error('❌ PaginaCliente: Erro ao buscar dados:', err);
         setErro('⚠️ Erro ao buscar dados do cliente.');
       } finally {
         setLoading(false);
@@ -68,7 +81,7 @@ export default function PaginaCliente() {
       <div className="mb-4 md:mb-6 flex justify-center">
         <button
           onClick={() => setMostrarDados(!mostrarDados)}
-          className="px-3 py-2 md:px-4 md:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs md:text-sm font-medium"
+          className="w-full md:w-auto px-3 py-2 md:px-4 md:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-xs md:text-sm font-medium"
         >
           {mostrarDados ? '👁️‍🗨️ Ocultar Dados' : '👁️ Mostrar Dados Pessoais'}
         </button>
@@ -82,7 +95,7 @@ export default function PaginaCliente() {
       )}
       
       {erro && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 md:px-4 md:py-3 rounded-lg mb-4 md:mb-6 text-center text-sm">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 md:px-4 md:py-3 rounded-lg mb-4 md:mb-6 text-center text-sm md:text-base">
           {erro}
         </div>
       )}
